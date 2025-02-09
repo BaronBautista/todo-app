@@ -18,3 +18,13 @@ export const addNote = async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ message: "Error adding note", error });
   }
 };
+
+export const getNotes = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const notes = await Note.find(); // Fetch all notes from the database
+    res.status(200).json(notes);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching notes", error });
+  }
+};
+
