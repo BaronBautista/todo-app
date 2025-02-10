@@ -7,7 +7,8 @@ import LoginPage from "./pages/auth/LoginPage";
 import IsAuthenticated from "./layout/IsAuthenticated";
 import IsUnAuthenticated from "./layout/IsUnAuthenticated";
 import LandingPage from "./pages/LandingPage";
-import Notes from "./components/Notes"
+
+
 
 const router = createBrowserRouter([
   {
@@ -49,11 +50,7 @@ function App() {
   return (
     <>
       <RouterProvider router={router} />
-
       <Toaster />
-      <div className="flex justify-center items-center min-h-screen bg-gray-50">
-        <Notes />
-      </div>
     </>
   );
 }

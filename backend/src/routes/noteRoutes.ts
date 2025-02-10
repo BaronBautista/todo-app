@@ -1,11 +1,12 @@
 import express from "express";
-import { getNotes, addNote } from "../controllers/Note"; // Import correctly
+import { getNotes, addNote, updateNote } from "../controllers/Note"; // Import correctly
 
 
 const router = express.Router();
 
-// Define the route for adding a note
-router.post("/addNote", addNote);
+
 router.get("/getNotes", getNotes);
+router.post("/addNote", addNote);
+router.put("/updateNote/:id", updateNote); 
 
 export default router;
