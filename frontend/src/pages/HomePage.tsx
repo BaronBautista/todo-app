@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import useAuthStore from "../stores/useAuthStore";
-import { fetchNotes, addNote, updateNote, deleteNote } from "../api/fetchNoteApi"; // Import delete function
+import {
+  fetchNotes,
+  addNote,
+  updateNote,
+  deleteNote,
+} from "../api/fetchNoteApi"; // Import delete function
 
 interface Note {
   _id: string;
@@ -23,7 +28,10 @@ const HomePage = () => {
       if (Array.isArray(data)) {
         const sortedNotes = data
           .filter((note) => note.createdAt)
-          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
         setNotes(sortedNotes);
       } else {
         console.error("Unexpected data format:", data);
@@ -40,7 +48,8 @@ const HomePage = () => {
   // Handle adding or updating a note
   const handleAddOrUpdateNote = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim() || !content.trim()) return alert("Title and content required");
+    if (!title.trim() || !content.trim())
+      return alert("Title and content required");
 
     try {
       if (editingNote) {
@@ -62,7 +71,9 @@ const HomePage = () => {
 
   // Handle deleting a note with confirmation
   const handleDeleteNote = async (id: string) => {
-    const confirmDelete = window.confirm("❌ Are you sure you want to delete this note?");
+    const confirmDelete = window.confirm(
+      "❌ Are you sure you want to delete this note?"
+    );
     if (!confirmDelete) return;
 
     try {
@@ -83,71 +94,87 @@ const HomePage = () => {
 
   return (
     <div className="h-screen w-screen flex flex-col items-center">
-      {/* Header */}
-      <header className="w-full bg-blue text-white p-4 flex justify-between items-center">
-        <h1 className="text-xl font-bold">Todo App</h1>
-        <nav>
-          <ul className="flex space-x-2">
-            <li className="cursor-pointer hover:p-2 hover:rounded-md hover:text-blue hover:bg-bluecont">Github</li>
-            <li className="cursor-pointer hover:p-2 hover:rounded-md hover:text-blue hover:bg-bluecont">Facebook</li>
-          </ul>
-        </nav>
-        <button className="shadow-xl hover:p-2 hover:rounded-md hover:text-blue hover:bg-bluecont  px-4 py-2 rounded-md" onClick={logoutUser}>
-          Logout
-        </button>
-      </header>
-
-      {/* Main Content */}
-      <div className="w-full max-w-lg mx-auto mt-10 p-10 bg-white shadow-xl rounded-lg">
-        <h2 className="text-2xl font-bold text-center mb-4">Notes</h2>
-
-        {/* Form to add or update a note */}
-        <form onSubmit={handleAddOrUpdateNote} className="space-y-3">
-          <input
-            type="text"
-            placeholder="Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-            className="w-full p-2 border rounded-md"
-          />
-          <textarea
-            placeholder="Content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            required
-            className="w-full p-2 border rounded-md"
-          />
-          <button type="submit" className="w-full bg-blue text-white py-2 rounded-md hover:bg-blue-600">
-            {editingNote ? "Update Note" : "Add Note"}
+      <div data-svg-wrapper className="relative">
+        {/* Header */}
+        <header className="w-screen bg-blue text-white p-4 flex justify-between items-center">
+          <h1 className="text-xl font-bold">Todo App</h1>
+          <nav>
+            <ul className="flex space-x-2">
+              <li className="cursor-pointer hover:p-2 hover:rounded-md hover:text-blue hover:bg-bluecont">
+                Github
+              </li>
+              <li className="cursor-pointer hover:p-2 hover:rounded-md hover:text-blue hover:bg-bluecont">
+                Facebook
+              </li>
+            </ul>
+          </nav>
+          <button
+            className="shadow-xl hover:p-2 hover:rounded-md hover:text-blue hover:bg-bluecont  px-4 py-2 rounded-md"
+            onClick={logoutUser}
+          >
+            Logout
           </button>
-        </form>
+        </header>
 
-        {/* Notes list */}
-        <ul className="mt-5 space-y-3 h-60 overflow-y-auto border p-2 rounded-md">
-          {notes.map((note) => (
-            <li key={note._id} className="p-3 border rounded-md bg-gray-100 flex justify-between items-center">
-              <div>
-                <strong className="block text-lg">{note.title}</strong>
-                <p className="text-gray-600">{note.content}</p>
-              </div>
-              <div className="flex space-x-2">
-                <button
-                  onClick={() => handleEdit(note)}
-                  className="bg-blue text-white px-3 py-1 rounded-md hover:bg-yellow-600"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDeleteNote(note._id)}
-                  className="bg-red text-white px-3 py-1 rounded-md hover:bg-red-600"
-                >
-                  Delete
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
+        {/* Main Content */}
+        <div className="w-full max-w-lg mx-auto mt-10 p-10 bg-white shadow-xl rounded-lg">
+          <h2 className="text-2xl font-bold text-center mb-4">Notes</h2>
+
+          {/* Form to add or update a note */}
+          <form onSubmit={handleAddOrUpdateNote} className="space-y-3">
+            <input
+              type="text"
+              placeholder="Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+              className="w-full p-2 border rounded-md"
+            />
+            <textarea
+              placeholder="Content"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              required
+              className="w-full p-2 border rounded-md"
+            />
+            <button
+              type="submit"
+              className="w-full bg-blue text-white py-2 rounded-md hover:bg-opacity-90 hover:text-white"
+            >
+              {editingNote ? "Update Note" : "Add Note"}
+            </button>
+          </form>
+
+          {/* Notes list */}
+          <ul className="mt-5 space-y-3 h-60 overflow-y-auto border p-2 rounded-md">
+            {notes.map((note) => (
+              <li
+                key={note._id}
+                className="p-3 border rounded-md shadow-md bg-blue text-white flex justify-between items-center"
+              >
+                <div>
+                  <strong className="block text-lg  ">{note.title}</strong>
+                  <p> ------------------------- </p>
+                  <p className="">{note.content}</p>
+                </div>
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => handleEdit(note)}
+                    className="bg-bluecont text-blue px-3 py-1 rounded-md hover:bg-bluebg "
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDeleteNote(note._id)}
+                    className="bg-red text-white px-3 py-1 rounded-md hover:bg-opacity-80 "
+                  >
+                    Delete
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
